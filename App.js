@@ -1,12 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TextInput
-} from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView } from 'react-native';
 
 export default function App() {
 
@@ -34,9 +28,9 @@ export default function App() {
         />
         <Button title="Add" onPress={addGoalHandler} />
       </View>
-      <View >
-
-      </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {courseGoals.map((goal, index) => <View style={ styles.listItem } key={index}><Text>{goal}</Text></View>)}
+      </ScrollView>
     </View>
   );
 }
@@ -99,5 +93,12 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     padding: 10
+  },
+  listItem: {
+    padding: 10,
+    marginVertical: 10,
+    backgroundColor: '#ccc',
+    borderColor: 'black',
+    borderWidth: 1
   }
 });
