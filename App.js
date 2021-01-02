@@ -1,6 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, FlatList } from 'react-native';
+
+import GoalItem from './components/GoalItem';
+import GoalInput from './components/GoalInput'
 
 export default function App() {
 
@@ -14,23 +17,18 @@ export default function App() {
 
   const addGoalHandler = () => {
     // console.log(enteredGoal)
-    setCourseGoals(courseGoals => [...courseGoals, enteredGoal])
+    setCourseGoals(courseGoals => [...courseGoals, {key: Math.random().toString(), text: enteredGoal}])
   }
 
   return (
     <View style={styles.screen} >
-      <View style={styles.inputContainer} >
-        <TextInput
-          placeholder="Course Goal"
-          style={styles.input}
-          value={enteredGoal}
-          onChangeText={goalInputHandler}
-        />
-        <Button title="Add" onPress={addGoalHandler} />
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {courseGoals.map((goal, index) => <View style={ styles.listItem } key={index}><Text>{goal}</Text></View>)}
-      </ScrollView>
+      <GoalInput enteredGoal={enteredGoal} goalInputHandler={goalInputHandler} addGoalHandler={addGoalHandler}/>
+      <FlatList 
+        showsVerticalScrollIndicator={false}
+        data={courseGoals}
+        renderItem={({ item }) => <GoalItem text={item.text}/>}
+        keyExtractor={item => item.key}
+      />
     </View>
   );
 }
@@ -82,23 +80,5 @@ export default function App() {
 const styles = StyleSheet.create({
   screen: {
     padding: 50
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  input: {
-    width: '80%',
-    borderColor: 'black',
-    borderWidth: 1,
-    padding: 10
-  },
-  listItem: {
-    padding: 10,
-    marginVertical: 10,
-    backgroundColor: '#ccc',
-    borderColor: 'black',
-    borderWidth: 1
   }
 });
